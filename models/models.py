@@ -29,8 +29,8 @@ class WeatherAlertDB(Base):
 class WeatherCacheDB(Base):
     __tablename__ = "weather_cache"
     location = Column(String, primary_key=True)
-    data = Column(JSON)  # SQLAlchemy will handle JSON serialization
-    timestamp = Column(DateTime)  # Store as proper DateTime type
+    data = Column(JSON)
+    timestamp = Column(DateTime)
 
     def __init__(self, location: str, data: dict, timestamp: datetime):
         self.location = location.lower()
