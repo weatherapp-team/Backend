@@ -1,5 +1,7 @@
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
+from starlette import status
+
 from core.database import get_db
 from models.models import SavedLocationDB, UserDB
 from dependencies.security import get_current_user
@@ -37,3 +39,25 @@ async def get_saved_locations(
         SavedLocationDB.user_id == current_user.id
     ).all()
     return [loc.location for loc in locations]
+
+@router.delete("")
+async def save_location(
+        location: str,
+        db: Session = Depends(get_db),
+        current_user: UserDB = Depends(get_current_user)
+):
+    existing = db.query(SavedLocationDB).filter(
+        SavedLocationDB.user_id == current_user.id,
+        SavedLocationDB.location == location
+    ).first()
+
+    if not existing:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Location not found",
+            headers={"WWW-Authenticate": "Bearer"},
+        )
+
+    db.delete(existing)
+
+    return {"message": "Location deleted successfully"}

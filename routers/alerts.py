@@ -14,7 +14,7 @@ comparators = [">", "<", "<=", ">="]
 columns = ["temperature", "humidity", "pressure"]
 
 
-@router.post("", response_model=AlertBase)
+@router.post("")
 async def create_alert(
     alert: AlertCreate,
     db: Session = Depends(get_db),
@@ -37,10 +37,11 @@ async def create_alert(
 
     db.add(new_alert)
     db.commit()
-    return new_alert
+
+    return {"message": "Alert created successfully"}
 
 
-@router.put("", response_model=AlertGet)
+@router.put("")
 async def update_alert(
     alert: AlertUpdate,
     db: Session = Depends(get_db),
@@ -69,10 +70,11 @@ async def update_alert(
     alert_in_db.number = alert.number
 
     db.commit()
-    return alert_in_db
+
+    return {"message": "Alert edited successfully"}
 
 
-@router.delete("", response_model=AlertGet)
+@router.delete("")
 async def delete_alert(
     alertDelete: AlertDelete,
     db: Session = Depends(get_db),
@@ -90,7 +92,8 @@ async def delete_alert(
 
     db.delete(alert_in_db)
     db.commit()
-    return alert_in_db
+
+    return {"message": "Alert deleted successfully"}
 
 
 @router.get("", response_model=list[AlertGet])
