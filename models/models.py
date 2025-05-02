@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from sqlalchemy import Column, Integer, String, Boolean, DateTime, ForeignKey, JSON
 from core.database import Base
 
@@ -27,5 +29,25 @@ class WeatherAlertDB(Base):
 class WeatherCacheDB(Base):
     __tablename__ = "weather_cache"
     location = Column(String, primary_key=True)
-    data = Column(JSON)
-    timestamp = Column(DateTime)
+    data = Column(JSON)  # SQLAlchemy will handle JSON serialization
+    timestamp = Column(DateTime)  # Store as proper DateTime type
+
+    def __init__(self, location: str, data: dict, timestamp: datetime):
+        self.location = location.lower()
+        self.data = self.serialize_data(data)
+        self.timestamp = timestamp
+
+    @staticmethod
+    def serialize_data(data: dict) -> dict:
+        """Convert datetime objects to ISO format strings for JSON serialization"""
+        serialized = data.copy()
+        if 'timestamp' in serialized and isinstance(serialized['timestamp'], datetime):
+            serialized['timestamp'] = serialized['timestamp'].isoformat()
+        return serialized
+
+    def deserialize_data(self) -> dict:
+        """Convert ISO format strings back to datetime objects when retrieving"""
+        deserialized = self.data.copy()
+        if 'timestamp' in deserialized:
+            deserialized['timestamp'] = datetime.fromisoformat(deserialized['timestamp'])
+        return deserialized

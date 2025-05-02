@@ -22,8 +22,8 @@ class WeatherService:
             url = f"http://api.openweathermap.org/data/2.5/weather?q={location}&appid={self.api_key}&units=metric"
             response = requests.get(url)
             response.raise_for_status()
+            print(response)
             data = response.json()
-
             weather_data = {
                 "location": location,
                 "temperature": data['main']['temp'],
@@ -33,7 +33,7 @@ class WeatherService:
             }
 
             if cached:
-                cached.data = weather_data
+                cached.data = WeatherCacheDB.serialize_data(weather_data)
                 cached.timestamp = datetime.now()
             else:
                 new_cache = WeatherCacheDB(
@@ -44,6 +44,9 @@ class WeatherService:
                 db.add(new_cache)
             db.commit()
             return weather_data
+        except Exception as e:
+            db.rollback()
+            raise HTTPException(status_code=502, detail=str(e))
 
         except requests.RequestException as e:
             raise HTTPException(status_code=502, detail=f"Weather API error: {str(e)}")
