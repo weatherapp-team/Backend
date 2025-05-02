@@ -4,10 +4,10 @@ import os
 
 
 class Settings(BaseSettings):
-    openweather_api_key: str
-    admin_email: str
-    admin_password: str
-    admin_username: str
+    openweather_api_key: str = "dummy_key"
+    admin_email: str = "admin@example.com"
+    admin_password: str = "admin123"
+    admin_username: str = "admin"
     secret_key: str = "secret-key"
     algorithm: str = "HS256"
     access_token_expire_minutes: int = 30
@@ -15,7 +15,8 @@ class Settings(BaseSettings):
 
     model_config = SettingsConfigDict(
         env_file=".env",
-        env_file_encoding='utf-8'
+        env_file_encoding='utf-8',
+        extra='ignore'
     )
 
     @property
