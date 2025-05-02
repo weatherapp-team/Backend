@@ -20,19 +20,3 @@ async def get_weather(
         return weather_service.get_weather_data(db, location)
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
-
-
-@router.get("/dashboard")
-async def weather_dashboard(
-    db: Session = Depends(get_db),
-    current_user: UserDB = Depends(get_current_user)
-):
-    locations = db.query(SavedLocationDB).filter(
-        SavedLocationDB.user_id == current_user.id
-    ).all()
-    return {
-        "locations": [
-            weather_service.get_weather_data(db, loc.location)
-            for loc in locations
-        ]
-    }
