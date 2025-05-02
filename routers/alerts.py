@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 from core.database import get_db
 from schemas.schemas import AlertCreate, Alert
@@ -6,6 +6,7 @@ from models.models import WeatherAlertDB, UserDB
 from dependencies.security import get_current_user
 
 router = APIRouter(prefix="/alerts", tags=["alerts"])
+
 
 @router.post("", response_model=Alert)
 async def create_alert(
@@ -21,6 +22,7 @@ async def create_alert(
     db.add(new_alert)
     db.commit()
     return new_alert
+
 
 @router.get("", response_model=list[Alert])
 async def get_alerts(

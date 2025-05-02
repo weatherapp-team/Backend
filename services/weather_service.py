@@ -15,14 +15,15 @@ class WeatherService:
             WeatherCacheDB.location == location.lower()
         ).first()
 
-        if cached and (datetime.now() - cached.timestamp) < timedelta(minutes=30):
+        if cached and (datetime.now()
+                       - cached.timestamp) < timedelta(minutes=30):
             return cached.data
 
         try:
-            url = f"http://api.openweathermap.org/data/2.5/weather?q={location}&appid={self.api_key}&units=metric"
+            url = (f"http://api.openweathermap.org/data/2.5/"
+                   f"weather?q={location}&appid={self.api_key}&units=metric")
             response = requests.get(url)
             response.raise_for_status()
-            print(response)
             data = response.json()
             weather_data = {
                 "location": location,
@@ -46,7 +47,9 @@ class WeatherService:
             return weather_data
         except Exception as e:
             db.rollback()
-            raise HTTPException(status_code=502, detail=str(e))
+            raise HTTPException(status_code=502,
+                                detail=str(e))
 
         except requests.RequestException as e:
-            raise HTTPException(status_code=502, detail=f"Weather API error: {str(e)}")
+            raise HTTPException(status_code=502,
+                                detail=f"Weather API error: {str(e)}")

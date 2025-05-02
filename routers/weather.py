@@ -9,6 +9,7 @@ from services.weather_service import WeatherService
 router = APIRouter(prefix="/weather", tags=["weather"])
 weather_service = WeatherService()
 
+
 @router.get("/{location}", response_model=WeatherData)
 async def get_weather(
     location: str,
@@ -19,6 +20,7 @@ async def get_weather(
         return weather_service.get_weather_data(db, location)
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
+
 
 @router.get("/dashboard")
 async def weather_dashboard(

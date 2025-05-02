@@ -12,6 +12,7 @@ from services.user_service import UserService
 
 router = APIRouter(prefix="/auth", tags=["auth"])
 
+
 @router.post("/login", response_model=Token)
 async def login(
     form_data: UserLogin,
@@ -25,6 +26,7 @@ async def login(
         )
     access_token = create_access_token(data={"sub": user.username})
     return {"access_token": access_token, "token_type": "bearer"}
+
 
 @router.post("/register", status_code=status.HTTP_201_CREATED)
 async def register(
@@ -40,6 +42,7 @@ async def register(
         )
     UserService.create_user(db, user_data)
     return {"message": "User created successfully"}
+
 
 @router.get("/me", response_model=User)
 async def read_current_user(

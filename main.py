@@ -12,7 +12,8 @@ init_admin_user()
 
 app = FastAPI(
     title="Weather Monitoring App",
-    description="An app to monitor weather conditions with alerts and historical data",
+    description="An app to monitor weather conditions"
+                " with alerts and historical data",
     version="1.0.0"
 )
 

@@ -3,10 +3,12 @@ from models.models import UserDB
 from dependencies.security import get_password_hash
 from core.config import settings
 
+
 def init_admin_user():
     db = SessionLocal()
     try:
-        admin = db.query(UserDB).filter(UserDB.email == settings.admin_email).first()
+        admin = (db.query(UserDB)
+                 .filter(UserDB.email == settings.admin_email).first())
         if not admin:
             admin_user = UserDB(
                 username=settings.admin_username,

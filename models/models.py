@@ -1,7 +1,9 @@
 from datetime import datetime
 
-from sqlalchemy import Column, Integer, String, Boolean, DateTime, ForeignKey, JSON
+from sqlalchemy import (Column, Integer, String,
+                        Boolean, DateTime, ForeignKey, JSON)
 from core.database import Base
+
 
 class UserDB(Base):
     __tablename__ = "users"
@@ -12,11 +14,13 @@ class UserDB(Base):
     hashed_password = Column(String)
     disabled = Column(Boolean, default=False)
 
+
 class SavedLocationDB(Base):
     __tablename__ = "saved_locations"
     id = Column(Integer, primary_key=True, index=True)
     user_id = Column(Integer, ForeignKey("users.id"))
     location = Column(String)
+
 
 class WeatherAlertDB(Base):
     __tablename__ = "weather_alerts"
@@ -25,6 +29,7 @@ class WeatherAlertDB(Base):
     location = Column(String)
     condition = Column(String)
     active = Column(Boolean, default=True)
+
 
 class WeatherCacheDB(Base):
     __tablename__ = "weather_cache"
@@ -39,15 +44,19 @@ class WeatherCacheDB(Base):
 
     @staticmethod
     def serialize_data(data: dict) -> dict:
-        """Convert datetime objects to ISO format strings for JSON serialization"""
+        """Convert datetime objects to ISO format
+         strings for JSON serialization"""
         serialized = data.copy()
-        if 'timestamp' in serialized and isinstance(serialized['timestamp'], datetime):
+        if ('timestamp' in serialized
+                and isinstance(serialized['timestamp'], datetime)):
             serialized['timestamp'] = serialized['timestamp'].isoformat()
         return serialized
 
     def deserialize_data(self) -> dict:
-        """Convert ISO format strings back to datetime objects when retrieving"""
+        """Convert ISO format strings back to
+         datetime objects when retrieving"""
         deserialized = self.data.copy()
         if 'timestamp' in deserialized:
-            deserialized['timestamp'] = datetime.fromisoformat(deserialized['timestamp'])
+            deserialized['timestamp'] = (
+                datetime.fromisoformat(deserialized['timestamp']))
         return deserialized

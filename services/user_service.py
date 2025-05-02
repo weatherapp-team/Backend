@@ -2,6 +2,7 @@ from sqlalchemy.orm import Session
 from models.models import UserDB
 from dependencies.security import get_password_hash
 
+
 class UserService:
     @staticmethod
     def create_user(db: Session, user_data):
