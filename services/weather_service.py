@@ -27,9 +27,20 @@ class WeatherService:
             data = response.json()
             weather_data = {
                 "location": location,
-                "temperature": data['main']['temp'],
-                "humidity": data['main']['humidity'],
+                "main_weather": data['weather'][0]['main'],
+                "icon": data['weather'][0]['icon'],
                 "description": data['weather'][0]['description'],
+                "temperature": data['main']['temp'],
+                "temperature_feels_like": data['main']['feels_like'],
+                "temperature_min": data['main']['temp_min'],
+                "temperature_max": data['main']['temp_max'],
+                "pressure": data['main']['pressure'],
+                "humidity": data['main']['humidity'],
+                "visibility": data['visibility'],
+                "wind_speed": data['wind']['speed'],
+                "wind_deg": data['wind']['speed'],
+                "sunrise": data['sys']['sunrise'],
+                "sunset": data['sys']['sunset'],
                 "timestamp": datetime.now()
             }
 

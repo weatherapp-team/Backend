@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from core.database import get_db
-from models.models import UserDB, SavedLocationDB
+from models.models import UserDB
 from schemas.schemas import WeatherData
 from dependencies.security import get_current_user
 from services.weather_service import WeatherService

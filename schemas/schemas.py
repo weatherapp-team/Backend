@@ -14,10 +14,21 @@ class TokenData(BaseModel):
 
 class WeatherData(BaseModel):
     location: str
-    temperature: float
-    humidity: float
+    main_weather: str
+    icon: str
     description: str
+    temperature: float
+    temperature_feels_like: float
+    temperature_min: float
+    temperature_max: float
+    pressure: float
+    humidity: float
+    visibility: float
+    wind_speed: float
+    wind_deg: float
     timestamp: datetime
+    sunrise: datetime
+    sunset: datetime
 
 
 class AlertBase(BaseModel):
