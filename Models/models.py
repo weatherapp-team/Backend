@@ -1,42 +1,31 @@
-from pydantic import BaseModel
-from typing import Optional, List
-from datetime import datetime
+from sqlalchemy import Column, Integer, String, Boolean, DateTime, ForeignKey, JSON
+from core.database import Base
 
-class Token(BaseModel):
-    access_token: str
-    token_type: str
+class UserDB(Base):
+    __tablename__ = "users"
+    id = Column(Integer, primary_key=True, index=True)
+    username = Column(String, unique=True, index=True)
+    email = Column(String, unique=True, index=True)
+    full_name = Column(String)
+    hashed_password = Column(String)
+    disabled = Column(Boolean, default=False)
 
-class TokenData(BaseModel):
-    username: Optional[str] = None
+class SavedLocationDB(Base):
+    __tablename__ = "saved_locations"
+    id = Column(Integer, primary_key=True, index=True)
+    user_id = Column(Integer, ForeignKey("users.id"))
+    location = Column(String)
 
-class WeatherData(BaseModel):
-    location: str
-    temperature: float
-    humidity: float
-    description: str
-    timestamp: datetime
+class WeatherAlertDB(Base):
+    __tablename__ = "weather_alerts"
+    id = Column(Integer, primary_key=True, index=True)
+    user_id = Column(Integer, ForeignKey("users.id"))
+    location = Column(String)
+    condition = Column(String)
+    active = Column(Boolean, default=True)
 
-class AlertCreate(BaseModel):
-    location: str
-    condition: str
-
-class User(BaseModel):
-    username: str
-    email: Optional[str] = None
-    full_name: Optional[str] = None
-    disabled: Optional[bool] = None
-
-class UserInDB(User):
-    hashed_password: str
-    saved_locations: List[str] = []
-    weather_alerts: List[dict] = []
-
-class UserLogin(BaseModel):
-    username: str
-    password: str
-
-class UserCreate(BaseModel):
-    username: str
-    password: str
-    email: str
-    full_name: Optional[str] = None
+class WeatherCacheDB(Base):
+    __tablename__ = "weather_cache"
+    location = Column(String, primary_key=True)
+    data = Column(JSON)
+    timestamp = Column(DateTime)
