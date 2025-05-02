@@ -40,8 +40,9 @@ async def get_saved_locations(
     ).all()
     return [loc.location for loc in locations]
 
+
 @router.delete("")
-async def save_location(
+async def delete_location(
         location: str,
         db: Session = Depends(get_db),
         current_user: UserDB = Depends(get_current_user)

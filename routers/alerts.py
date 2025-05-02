@@ -3,7 +3,7 @@ from sqlalchemy.orm import Session
 from starlette import status
 
 from core.database import get_db
-from schemas.schemas import (AlertCreate, AlertBase, AlertUpdate,
+from schemas.schemas import (AlertCreate, AlertUpdate,
                              AlertDelete, AlertGet)
 from models.models import WeatherAlertDB, UserDB
 from dependencies.security import get_current_user
@@ -76,12 +76,12 @@ async def update_alert(
 
 @router.delete("")
 async def delete_alert(
-    alertDelete: AlertDelete,
+    alert_delete: AlertDelete,
     db: Session = Depends(get_db),
     current_user: UserDB = Depends(get_current_user)
 ):
     alert_in_db = (db.query(WeatherAlertDB)
-                   .filter_by(id=alertDelete.id,
+                   .filter_by(id=alert_delete.id,
                               user_id=current_user.id).first())
 
     if alert_in_db is None:
