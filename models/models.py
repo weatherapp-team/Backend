@@ -27,8 +27,9 @@ class WeatherAlertDB(Base):
     id = Column(Integer, primary_key=True, index=True)
     user_id = Column(Integer, ForeignKey("users.id"))
     location = Column(String)
-    condition = Column(String)
-    active = Column(Boolean, default=True)
+    column_name = Column(String)
+    comparator = Column(String)
+    number = Column(Integer)
 
 
 class WeatherCacheDB(Base):

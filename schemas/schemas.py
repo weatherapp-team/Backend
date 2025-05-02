@@ -33,15 +33,25 @@ class WeatherData(BaseModel):
 
 class AlertBase(BaseModel):
     location: str
-    condition: str
+    column_name: str
+    comparator: str
+    number: int
 
 
 class AlertCreate(AlertBase):
     pass
 
 
-class Alert(AlertBase):
-    active: bool
+class AlertUpdate(AlertBase):
+    id: int
+
+
+class AlertGet(AlertBase):
+    id: int
+
+
+class AlertDelete(BaseModel):
+    id: int
 
 
 class UserBase(BaseModel):
