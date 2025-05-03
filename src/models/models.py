@@ -61,7 +61,8 @@ class WeatherCacheDB(Base):
     Cached weather model in db.
     """
     __tablename__ = "weather_cache"
-    location = Column(String, primary_key=True)
+    id = Column(Integer, primary_key=True, index=True)
+    location = Column(String)
     data = Column(JSON)
     timestamp = Column(DateTime)
 

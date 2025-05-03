@@ -4,7 +4,7 @@ from starlette import status
 
 from core.database import get_db
 from schemas.schemas import (AlertCreate, AlertUpdate,
-                             AlertDelete, AlertGet, NotificationGet)
+                                 AlertDelete, AlertGet, NotificationGet)
 from models.models import WeatherAlertDB, UserDB, NotificationDB
 from dependencies.security import get_current_user
 
