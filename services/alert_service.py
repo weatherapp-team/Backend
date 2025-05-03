@@ -10,34 +10,55 @@ from core.database import get_db
 from models.models import WeatherAlertDB, NotificationDB
 
 
-class BackgroundService(threading.Thread):
+class AlertBackgroundService(threading.Thread):
+    """
+    Service for handling alerts.
+    """
     def __init__(self, input_queue=None):
+        """
+        Initialization of service.
+        :param input_queue: queue that will be copied.
+        """
         super().__init__()
         self.daemon = True
         self.input_queue = input_queue if input_queue else queue.Queue()
         self._stop_event = threading.Event()
 
     def stop(self):
-        """Signal the thread to stop"""
+        """
+        Signal the thread to stop
+        :return:
+        """
         self._stop_event.set()
 
     def add_item(self, item: dict):
-        """Add an item to be processed by the background service"""
+        """
+        Add an item to be processed by the background service
+        :param item: item
+        :return:
+        """
         self.input_queue.put(item)
 
     def run(self):
-        """Main processing loop"""
+        """
+        Main processing loop
+        :return:
+        """
         while not self._stop_event.is_set():
             try:
                 item = self.input_queue.get(timeout=0.1)
-                BackgroundService.process_item(item)
+                AlertBackgroundService.process_item(item)
                 self.input_queue.task_done()
             except queue.Empty:
                 continue
 
     @staticmethod
     def process_item(weather_data: dict):
-        """Process a single item from the queue"""
+        """
+        Process a single item from the queue
+        :param weather_data: weather data to process.
+        :return:
+        """
         try:
             db: Session = next(get_db())
             alerts = db.query(WeatherAlertDB).filter_by(
@@ -51,7 +72,7 @@ class BackgroundService(threading.Thread):
                     actual_number = weather_data["pressure"]
                 else:
                     continue
-                if BackgroundService.to_be_notified(alert, actual_number):
+                if AlertBackgroundService.to_be_notified(alert, actual_number):
                     db.add(NotificationDB(
                         user_id=alert.user_id,
                         location=alert.location,
@@ -68,6 +89,12 @@ class BackgroundService(threading.Thread):
 
     @staticmethod
     def to_be_notified(alert: Type[WeatherAlertDB], actual_number: float):
+        """
+        Checker for comparing alert and weather data
+        :param alert: alert.
+        :param actual_number: value of column
+        :return: True if it is correct, else False
+        """
         if alert.comparator == "<":
             return actual_number < alert.number
         elif alert.comparator == "<=":

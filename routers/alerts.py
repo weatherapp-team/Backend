@@ -20,6 +20,13 @@ async def create_alert(
     db: Session = Depends(get_db),
     current_user: UserDB = Depends(get_current_user)
 ):
+    """
+    Creating alert.
+    :param alert: alert.
+    :param db: db session.
+    :param current_user: current user.
+    :return: message
+    """
     if alert.comparator not in comparators or alert.column_name not in columns:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
@@ -47,6 +54,13 @@ async def update_alert(
     db: Session = Depends(get_db),
     current_user: UserDB = Depends(get_current_user)
 ):
+    """
+    Updating alert.
+    :param alert: alert.
+    :param db: db session.
+    :param current_user: current user.
+    :return: message
+    """
     if alert.comparator not in comparators or alert.column_name not in columns:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
@@ -80,6 +94,13 @@ async def delete_alert(
     db: Session = Depends(get_db),
     current_user: UserDB = Depends(get_current_user)
 ):
+    """
+    Updating alert.
+    :param alert: alert.
+    :param db: db session.
+    :param current_user: current user.
+    :return: message
+    """
     alert_in_db = (db.query(WeatherAlertDB)
                    .filter_by(id=alert_delete.id,
                               user_id=current_user.id).first())
@@ -101,6 +122,12 @@ async def get_alerts(
     db: Session = Depends(get_db),
     current_user: UserDB = Depends(get_current_user)
 ):
+    """
+    Getting alerts.
+    :param db: db session.
+    :param current_user: current user.
+    :return: list of alerts.
+    """
     alerts = db.query(WeatherAlertDB).filter_by(
         user_id=current_user.id
     ).all()
@@ -112,6 +139,12 @@ async def get_notifications(
     db: Session = Depends(get_db),
     current_user: UserDB = Depends(get_current_user)
 ):
+    """
+    Getting notifications.
+    :param db: db session.
+    :param current_user: current user.
+    :return: list of notifications.
+    """
     alerts = db.query(NotificationDB).filter_by(
         user_id=current_user.id
     ).all()

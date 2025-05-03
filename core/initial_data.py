@@ -5,6 +5,10 @@ from core.config import settings
 
 
 def init_admin_user():
+    """
+    Function that is responsible for creating admin user for our application.
+    :return: nothing
+    """
     db = SessionLocal()
     try:
         admin = (db.query(UserDB)

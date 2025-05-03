@@ -6,6 +6,9 @@ from core.database import Base
 
 
 class UserDB(Base):
+    """
+    User model in db.
+    """
     __tablename__ = "users"
     id = Column(Integer, primary_key=True, index=True)
     username = Column(String, unique=True, index=True)
@@ -16,6 +19,9 @@ class UserDB(Base):
 
 
 class SavedLocationDB(Base):
+    """
+    Location model in db.
+    """
     __tablename__ = "saved_locations"
     id = Column(Integer, primary_key=True, index=True)
     user_id = Column(Integer, ForeignKey("users.id"))
@@ -23,6 +29,9 @@ class SavedLocationDB(Base):
 
 
 class WeatherAlertDB(Base):
+    """
+    Alert model in db.
+    """
     __tablename__ = "weather_alerts"
     id = Column(Integer, primary_key=True, index=True)
     user_id = Column(Integer, ForeignKey("users.id"))
@@ -33,6 +42,9 @@ class WeatherAlertDB(Base):
 
 
 class NotificationDB(Base):
+    """
+    Notification model in db.
+    """
     __tablename__ = "weather_notifications"
     id = Column(Integer, primary_key=True, index=True)
     user_id = Column(Integer, ForeignKey("users.id"))
@@ -45,20 +57,32 @@ class NotificationDB(Base):
 
 
 class WeatherCacheDB(Base):
+    """
+    Cached weather model in db.
+    """
     __tablename__ = "weather_cache"
     location = Column(String, primary_key=True)
     data = Column(JSON)
     timestamp = Column(DateTime)
 
     def __init__(self, location: str, data: dict, timestamp: datetime):
+        """
+        Initialization of cached weather model in db.
+        :param location: location.
+        :param data: data
+        :param timestamp: timestamp
+        """
         self.location = location.lower()
         self.data = self.serialize_data(data)
         self.timestamp = timestamp
 
     @staticmethod
     def serialize_data(data: dict) -> dict:
-        """Convert datetime objects to ISO format
-         strings for JSON serialization"""
+        """
+        Convert datetime objects to ISO format strings for JSON serialization
+        :param data: data
+        :return: serialized data
+        """
         serialized = data.copy()
         if ('timestamp' in serialized
                 and isinstance(serialized['timestamp'], datetime)):
@@ -66,8 +90,10 @@ class WeatherCacheDB(Base):
         return serialized
 
     def deserialize_data(self) -> dict:
-        """Convert ISO format strings back to
-         datetime objects when retrieving"""
+        """
+        Convert ISO format strings back to datetime objects when retrieving
+        :return: deserialized datetime.
+        """
         deserialized = self.data.copy()
         if 'timestamp' in deserialized:
             deserialized['timestamp'] = (

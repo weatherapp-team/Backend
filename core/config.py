@@ -4,6 +4,9 @@ import os
 
 
 class Settings(BaseSettings):
+    """
+    Configuration settings for our application.
+    """
     openweather_api_key: str = "dummy_key"
     admin_email: str = "admin@example.com"
     admin_password: str = "admin123"
@@ -21,6 +24,10 @@ class Settings(BaseSettings):
 
     @property
     def database_path(self) -> Path:
+        """
+        Function that returns path to database.
+        :return: path to database
+        """
         return Path(os.path.abspath(os.getcwd())) / "data"
 
 

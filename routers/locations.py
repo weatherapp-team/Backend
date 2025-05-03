@@ -15,6 +15,13 @@ async def save_location(
         db: Session = Depends(get_db),
         current_user: UserDB = Depends(get_current_user)
 ):
+    """
+    Function for saving location.
+    :param location: location to save
+    :param db: db session
+    :param current_user: current user
+    :return: message
+    """
     existing = db.query(SavedLocationDB).filter_by(
         user_id=current_user.id,
         location=location
@@ -35,6 +42,12 @@ async def get_saved_locations(
         db: Session = Depends(get_db),
         current_user: UserDB = Depends(get_current_user)
 ):
+    """
+    Function for getting saved location.
+    :param db: db session
+    :param current_user: current user
+    :return: list of locations in string format.
+    """
     locations = db.query(SavedLocationDB).filter_by(
         user_id=current_user.id
     ).all()
@@ -47,6 +60,13 @@ async def delete_location(
         db: Session = Depends(get_db),
         current_user: UserDB = Depends(get_current_user)
 ):
+    """
+    Function for deleting location.
+    :param location: location string
+    :param db: db session
+    :param current_user: current user
+    :return: message
+    """
     existing = db.query(SavedLocationDB).filter_by(
         user_id=current_user.id,
         location=location

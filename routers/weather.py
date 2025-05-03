@@ -18,10 +18,18 @@ async def get_weather(
     db: Session = Depends(get_db),
     _current_user: UserDB = Depends(get_current_user)
 ):
+    """
+    Function for getting the most recent weather data for location.
+    :param location: location.
+    :param db: db session.
+    :param _current_user: current user.
+    :return: weather data
+    """
     try:
         return weather_service.get_weather_data(db, location)
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
+
 
 @router.get("/{location}/history", response_model=List[WeatherData])
 async def get_weather_history(
@@ -29,6 +37,13 @@ async def get_weather_history(
     db: Session = Depends(get_db),
     _current_user: UserDB = Depends(get_current_user)
 ):
+    """
+    Function for getting history of weather data for location.
+    :param location: location.
+    :param db: db session.
+    :param _current_user: current user.
+    :return: history of weather data
+    """
     try:
         weather_service.get_weather_data(db, location)
 
@@ -39,4 +54,3 @@ async def get_weather_history(
         return [i.data for i in weather_history]
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
-

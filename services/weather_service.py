@@ -4,16 +4,28 @@ from fastapi import HTTPException
 from sqlalchemy.orm import Session
 from models.models import WeatherCacheDB
 from core.config import settings
-from services.alert_service import BackgroundService
+from services.alert_service import AlertBackgroundService
 
 
 class WeatherService:
+    """
+    Service for handling service.
+    """
     def __init__(self):
+        """
+        Initialization of service.
+        """
         self.api_key = settings.openweather_api_key
-        self.service = BackgroundService()
+        self.service = AlertBackgroundService()
         self.service.start()
 
     def get_weather_data(self, db: Session, location: str):
+        """
+        Get weather data for a location.
+        :param db: db session
+        :param location: location
+        :return: weather data
+        """
         cached = db.query(WeatherCacheDB).filter_by(
             location=location.lower()
         ).first()

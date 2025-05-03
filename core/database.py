@@ -18,6 +18,10 @@ Base = declarative_base()
 
 
 def get_db():
+    """
+    Generator for yielding our database so that
+     it can be used in dependency injection.
+    """
     db = SessionLocal()
     try:
         yield db

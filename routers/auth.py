@@ -18,6 +18,12 @@ async def login(
     form_data: UserLogin,
     db: Session = Depends(get_db)
 ):
+    """
+    Login function
+    :param form_data: form data for user login
+    :param db: db session
+    :return: access token and token type
+    """
     user = authenticate_user(db, form_data.username, form_data.password)
     if not user:
         raise HTTPException(
@@ -33,6 +39,12 @@ async def register(
     user_data: UserCreate,
     db: Session = Depends(get_db)
 ):
+    """
+    Function for registering new user.
+    :param user_data: data for the new user.
+    :param db: db session
+    :return: message
+    """
     existing_user = db.query(UserDB).filter_by(
         username=user_data.username).first()
     if existing_user:
@@ -48,4 +60,9 @@ async def register(
 async def read_current_user(
     current_user: UserDB = Depends(get_current_user)
 ):
+    """
+    Function for reading current user.
+    :param current_user: current user.
+    :return: current user information.
+    """
     return current_user
