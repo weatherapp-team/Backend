@@ -26,6 +26,8 @@ class WeatherService:
             response.raise_for_status()
             data = response.json()
             weather_data = {
+                "lat": data['lat'],
+                "lon": data['lon'],
                 "location": location,
                 "main_weather": data['weather'][0]['main'],
                 "icon": data['weather'][0]['icon'],
@@ -38,7 +40,7 @@ class WeatherService:
                 "humidity": data['main']['humidity'],
                 "visibility": data['visibility'],
                 "wind_speed": data['wind']['speed'],
-                "wind_deg": data['wind']['speed'],
+                "wind_deg": data['wind']['deg'],
                 "sunrise": data['sys']['sunrise'],
                 "sunset": data['sys']['sunset'],
                 "timestamp": datetime.now()

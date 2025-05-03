@@ -27,6 +27,8 @@ class WeatherData(BaseModel):
     wind_speed: float
     wind_deg: float
     timestamp: datetime
+    lat: float
+    lon: float
     sunrise: datetime
     sunset: datetime
 
