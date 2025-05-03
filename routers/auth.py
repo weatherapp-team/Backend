@@ -33,8 +33,8 @@ async def register(
     user_data: UserCreate,
     db: Session = Depends(get_db)
 ):
-    existing_user = db.query(UserDB).filter(
-        UserDB.username == user_data.username).first()
+    existing_user = db.query(UserDB).filter_by(
+        username=user_data.username).first()
     if existing_user:
         raise HTTPException(
             status_code=400,

@@ -15,9 +15,9 @@ async def save_location(
         db: Session = Depends(get_db),
         current_user: UserDB = Depends(get_current_user)
 ):
-    existing = db.query(SavedLocationDB).filter(
-        SavedLocationDB.user_id == current_user.id,
-        SavedLocationDB.location == location
+    existing = db.query(SavedLocationDB).filter_by(
+        user_id=current_user.id,
+        location=location
     ).first()
 
     if not existing:
@@ -35,8 +35,8 @@ async def get_saved_locations(
         db: Session = Depends(get_db),
         current_user: UserDB = Depends(get_current_user)
 ):
-    locations = db.query(SavedLocationDB).filter(
-        SavedLocationDB.user_id == current_user.id
+    locations = db.query(SavedLocationDB).filter_by(
+        user_id=current_user.id
     ).all()
     return [loc.location for loc in locations]
 
@@ -47,9 +47,9 @@ async def delete_location(
         db: Session = Depends(get_db),
         current_user: UserDB = Depends(get_current_user)
 ):
-    existing = db.query(SavedLocationDB).filter(
-        SavedLocationDB.user_id == current_user.id,
-        SavedLocationDB.location == location
+    existing = db.query(SavedLocationDB).filter_by(
+        user_id=current_user.id,
+        location=location
     ).first()
 
     if not existing:

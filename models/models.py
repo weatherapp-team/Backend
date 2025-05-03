@@ -32,6 +32,18 @@ class WeatherAlertDB(Base):
     number = Column(Integer)
 
 
+class NotificationDB(Base):
+    __tablename__ = "weather_notifications"
+    id = Column(Integer, primary_key=True, index=True)
+    user_id = Column(Integer, ForeignKey("users.id"))
+    location = Column(String)
+    column_name = Column(String)
+    comparator = Column(String)
+    number = Column(Integer)
+    actual_number = Column(Integer)
+    timestamp = Column(DateTime)
+
+
 class WeatherCacheDB(Base):
     __tablename__ = "weather_cache"
     location = Column(String, primary_key=True)

@@ -4,8 +4,8 @@ from starlette import status
 
 from core.database import get_db
 from schemas.schemas import (AlertCreate, AlertUpdate,
-                             AlertDelete, AlertGet)
-from models.models import WeatherAlertDB, UserDB
+                             AlertDelete, AlertGet, NotificationGet)
+from models.models import WeatherAlertDB, UserDB, NotificationDB
 from dependencies.security import get_current_user
 
 router = APIRouter(prefix="/alerts", tags=["alerts"])
@@ -101,7 +101,18 @@ async def get_alerts(
     db: Session = Depends(get_db),
     current_user: UserDB = Depends(get_current_user)
 ):
-    alerts = db.query(WeatherAlertDB).filter(
-        WeatherAlertDB.user_id == current_user.id
+    alerts = db.query(WeatherAlertDB).filter_by(
+        user_id=current_user.id
+    ).all()
+    return alerts
+
+
+@router.get("/notifications", response_model=list[NotificationGet])
+async def get_notifications(
+    db: Session = Depends(get_db),
+    current_user: UserDB = Depends(get_current_user)
+):
+    alerts = db.query(NotificationDB).filter_by(
+        user_id=current_user.id
     ).all()
     return alerts

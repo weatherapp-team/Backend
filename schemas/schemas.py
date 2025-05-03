@@ -40,6 +40,12 @@ class AlertBase(BaseModel):
     number: int
 
 
+class NotificationGet(BaseModel):
+    id: int
+    actual_number: float
+    timestamp: datetime
+
+
 class AlertCreate(AlertBase):
     pass
 

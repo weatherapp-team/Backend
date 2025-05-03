@@ -6,7 +6,7 @@ from core.config import settings
 from core.database import get_db
 from models.models import UserDB
 from sqlalchemy.orm import Session
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="auth/login")
@@ -21,7 +21,7 @@ def get_password_hash(password: str):
 
 
 def get_user(db: Session, username: str):
-    return db.query(UserDB).filter(UserDB.username == username).first()
+    return db.query(UserDB).filter_by(username=username).first()
 
 
 def authenticate_user(db: Session, username: str, password: str):
@@ -33,7 +33,7 @@ def authenticate_user(db: Session, username: str, password: str):
 
 def create_access_token(data: dict):
     to_encode = data.copy()
-    expire = (datetime.utcnow()
+    expire = (datetime.now(timezone.utc)
               + timedelta(minutes=settings.access_token_expire_minutes))
     to_encode.update({"exp": expire})
     return jwt.encode(to_encode, settings.secret_key,

@@ -4,15 +4,18 @@ from fastapi import HTTPException
 from sqlalchemy.orm import Session
 from models.models import WeatherCacheDB
 from core.config import settings
+from services.alert_service import BackgroundService
 
 
 class WeatherService:
     def __init__(self):
         self.api_key = settings.openweather_api_key
+        self.service = BackgroundService()
+        self.service.start()
 
     def get_weather_data(self, db: Session, location: str):
-        cached = db.query(WeatherCacheDB).filter(
-            WeatherCacheDB.location == location.lower()
+        cached = db.query(WeatherCacheDB).filter_by(
+            location=location.lower()
         ).first()
 
         if cached and (datetime.now()
@@ -26,8 +29,8 @@ class WeatherService:
             response.raise_for_status()
             data = response.json()
             weather_data = {
-                "lat": data['lat'],
-                "lon": data['lon'],
+                "lat": data['coord']['lat'],
+                "lon": data['coord']['lon'],
                 "location": location,
                 "main_weather": data['weather'][0]['main'],
                 "icon": data['weather'][0]['icon'],
@@ -46,16 +49,13 @@ class WeatherService:
                 "timestamp": datetime.now()
             }
 
-            if cached:
-                cached.data = WeatherCacheDB.serialize_data(weather_data)
-                cached.timestamp = datetime.now()
-            else:
-                new_cache = WeatherCacheDB(
-                    location=location.lower(),
-                    data=weather_data,
-                    timestamp=datetime.now()
-                )
-                db.add(new_cache)
+            new_cache = WeatherCacheDB(
+                location=location.lower(),
+                data=weather_data,
+                timestamp=datetime.now()
+            )
+            self.service.add_item(weather_data)
+            db.add(new_cache)
             db.commit()
             return weather_data
         except Exception as e:
