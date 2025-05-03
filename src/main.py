@@ -1,7 +1,8 @@
 from fastapi import FastAPI
 from dotenv import load_dotenv
 from core.database import engine, Base
-from routers import auth, weather, locations, alerts
+from routers import locations
+from routers import alerts, auth, weather
 from core.initial_data import init_admin_user
 
 load_dotenv()
@@ -14,7 +15,7 @@ app = FastAPI(
     title="Weather Monitoring App",
     description="An app to monitor weather conditions"
                 " with alerts and historical data",
-    version="1.0.0"
+    version="0.1.0"
 )
 
 app.include_router(auth.router)
