@@ -13,7 +13,7 @@ data/
 *.swo
 
 # Environment variables
-src/.env
+*/env
 .env.local
 
 # Virtual environment
