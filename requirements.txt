@@ -1,0 +1,10 @@
+fastapi[standard] == 0.115.12
+dotenv == 0.9.9
+sqlalchemy == 2.0.40
+pydantic-settings == 2.9.1
+jose == 1.0.0
+python-jose == 3.4.0
+passlib == 1.7.4
+requests == 2.32.3
+uvicorn == 0.34.2
+bcrypt == 4.3.0
