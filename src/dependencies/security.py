@@ -1,5 +1,5 @@
 from fastapi import Depends, HTTPException, status
-from fastapi.security import OAuth2PasswordBearer
+from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from jose import JWTError, jwt
 from passlib.context import CryptContext
 from core.config import settings
@@ -9,7 +9,7 @@ from sqlalchemy.orm import Session
 from datetime import datetime, timedelta, timezone
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl="auth/login")
+security = HTTPBearer()
 
 
 def verify_password(plain_password: str, hashed_password: str):
@@ -71,7 +71,7 @@ def create_access_token(data: dict):
 
 
 async def get_current_user(
-        token: str = Depends(oauth2_scheme),
+        credentials: HTTPAuthorizationCredentials = Depends(security),
         db: Session = Depends(get_db)
 ):
     """
@@ -86,6 +86,7 @@ async def get_current_user(
         headers={"WWW-Authenticate": "Bearer"},
     )
     try:
+        token = credentials.credentials
         payload = jwt.decode(token, settings.secret_key,
                              algorithms=[settings.algorithm])
         username: str = payload.get("sub")
