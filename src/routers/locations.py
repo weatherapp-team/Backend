@@ -80,5 +80,6 @@ async def delete_location(
         )
 
     db.delete(existing)
+    db.commit()
 
     return {"message": "Location deleted successfully"}

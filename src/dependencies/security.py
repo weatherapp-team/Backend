@@ -19,6 +19,7 @@ def verify_password(plain_password: str, hashed_password: str):
     :param hashed_password: password that is already hashed
     :return: is the plain password correct.
     """
+    print(plain_password, hashed_password)
     return pwd_context.verify(plain_password, hashed_password)
 
 

@@ -1,5 +1,5 @@
 from datetime import datetime
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 from typing import Optional
 
 
@@ -93,7 +93,7 @@ class UserBase(BaseModel):
     """
     Base schema for user.
     """
-    username: str
+    username: str = Field(..., min_length=5)
     email: str
     full_name: Optional[str] = None
 
@@ -102,15 +102,15 @@ class UserCreate(UserBase):
     """
     Schema for creating user.
     """
-    password: str
+    password: str = Field(..., min_length=5)
 
 
 class UserLogin(BaseModel):
     """
     User login schema
     """
-    username: str
-    password: str
+    username: str = Field(..., min_length=5)
+    password: str = Field(..., min_length=5)
 
 
 class User(UserBase):
