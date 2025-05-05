@@ -24,3 +24,24 @@ def test_register_duplicate_user(_):
 
     assert response.status_code == 400
     assert response.json()["detail"] == "Username already registered"
+
+def test_register_missing_fields(_):
+    user_data = {"username": "test_user", "password": "testpassword"}
+    client.post("/auth/register", json=user_data)
+    response = client.post("/auth/register", json=user_data)
+
+    assert response.status_code == 422
+
+def test_register_empty_fields(_):
+    user_data = {"username": "", "email": "", "password": ""}
+    client.post("/auth/register", json=user_data)
+    response = client.post("/auth/register", json=user_data)
+
+    assert response.status_code == 422
+
+
+def test_register_empty_object(_):
+    user_data = {}
+    client.post("/auth/register", json=user_data)
+    response = client.post("/auth/register", json=user_data)
+    assert response.status_code == 422
