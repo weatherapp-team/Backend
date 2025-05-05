@@ -1,0 +1,18 @@
+from core.database import get_db
+from src.main import app
+from fastapi.testclient import TestClient
+from tests.main import override_get_db
+from tests.main import test_db as _
+
+app.dependency_overrides[get_db] = override_get_db
+
+client = TestClient(app)
+
+
+def test_register(_):
+    user_data = {"username": "test_user", "email": "test_user@test.example", "password": "testpassword"}
+    response = client.post("/auth/register", json=user_data)
+
+    print(response.json())
+    assert response.status_code == 201
+    assert response.json()["message"] == "User created successfully"
