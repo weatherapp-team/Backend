@@ -1,14 +1,17 @@
 from core.database import get_db
-from main import app
+from src.main import app
 from fastapi.testclient import TestClient
-from ...main import override_get_db
+from tests.main import override_get_db
+from tests.main import test_db as _
+
 
 app.dependency_overrides[get_db] = override_get_db
 
 client = TestClient(app)
 
 
-def test_me(test_db):
+
+def test_me(_):
     """
     Test the profile route.
 
@@ -18,7 +21,8 @@ def test_me(test_db):
                  "email": "a.hleborezov@bread.example",
                  "password": "SuperMegaBread!",
                  "full_name": "Alexander Hleborezov"}
-    client.post("/auth/register", json=user_data)
+    register_response = client.post("/auth/register", json=user_data)
+    assert register_response.status_code == 201
     user = client.post("/auth/login",
                        json={"username": "a.hleborezov",
                              "password": "SuperMegaBread!"})
@@ -37,7 +41,7 @@ def test_me(test_db):
     assert 'password' not in res_json
 
 
-def test_me_not_authenticated(test_db):
+def test_me_not_authenticated(_):
     """
     Test the profile route when not authenticated.
 
