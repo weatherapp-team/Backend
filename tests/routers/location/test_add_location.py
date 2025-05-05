@@ -10,6 +10,11 @@ client = TestClient(app)
 
 
 def test_add_location(_):
+    """
+    Test adding location
+
+    This test tries to save location.
+    """
     user_data = {"username": "test_user", "email": "test_user@test.example", "password": "testpassword"}
     client.post("/auth/register", json=user_data)
 
@@ -24,13 +29,24 @@ def test_add_location(_):
     assert isinstance(locations.json(), list)
     assert len(locations.json()) == 1
 
+
 def test_add_location_not_authenticated(_):
+    """
+    Test adding location when not authenticated.
+
+    This test saves location when user is not authenticated, so API should return error message.
+    """
     response = client.post("/locations?location=Moscow")
     assert response.status_code == 403
     assert response.json()["detail"] == "Not authenticated"
 
 
 def test_add_location_missing_field(_):
+    """
+    Test adding location when missing field
+
+    This test tries to save location when missing field, so API should return error message.
+    """
     user_data = {"username": "test_user", "email": "test_user@test.example", "password": "testpassword"}
     client.post("/auth/register", json=user_data)
 
