@@ -13,8 +13,7 @@ data/
 *.swo
 
 # Environment variables
-*/.env
-.env
+*.env
 .env.local
 
 # Virtual environment
@@ -27,4 +26,4 @@ build/
 dist/
 *.egg-info/
 
-*/poetry.lock
+*poetry.lock
