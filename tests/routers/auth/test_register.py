@@ -16,3 +16,10 @@ def test_register(_):
     print(response.json())
     assert response.status_code == 201
     assert response.json()["message"] == "User created successfully"
+
+def test_register_duplicate_user(_):
+    user_data = {"username": "test_user", "email": "test_user@test.example", "password": "testpassword"}
+    client.post("/auth/register", json=user_data)
+    response = client.post("/auth/register", json=user_data)
+    assert response.status_code == 400
+    assert response.json()["detail"] == "Username already registered"
