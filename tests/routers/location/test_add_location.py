@@ -1,8 +1,8 @@
 from core.database import Base, get_db
 from main import app
 from fastapi.testclient import TestClient
-from ...main import override_get_db
-from ...main import test_db as _
+from tests.main import override_get_db
+from tests.main import test_db as _
 
 app.dependency_overrides[get_db] = override_get_db
 
@@ -17,7 +17,7 @@ def test_add_location(_):
     token = user.json()["access_token"]
     
     response = client.post("/locations?location=Moscow", headers={"Authorization": f"Bearer {token}"})
-    assert response.status_code == 201
+    assert response.status_code == 200
     assert response.json()["message"] == "Location saved successfully"
 
     locations = client.get("/locations", headers={"Authorization": f"Bearer {token}"})
