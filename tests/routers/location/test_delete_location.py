@@ -1,4 +1,4 @@
-from core.database import Base, get_db
+from core.database import get_db
 from main import app
 from fastapi.testclient import TestClient
 from tests.main import override_get_db
