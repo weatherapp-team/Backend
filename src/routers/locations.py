@@ -34,6 +34,12 @@ async def save_location(
         )
         db.add(new_location)
         db.commit()
+    else:
+        if existing:
+            raise HTTPException(
+                status_code=400,
+                detail="Location already saved"
+            )
     return {"message": "Location saved successfully"}
 
 
