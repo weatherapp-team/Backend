@@ -10,13 +10,11 @@ SessionLocalTest = sessionmaker(autocommit=False,
 
 
 def override_get_db():
-    db = None
+    db = SessionLocalTest()
     try:
-        db = SessionLocalTest()
         yield db
     finally:
-        if db is not None:
-            db.close()
+        db.close()
 
 
 @pytest.fixture()

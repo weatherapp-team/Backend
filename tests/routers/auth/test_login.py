@@ -1,14 +1,15 @@
 from core.database import get_db
-from main import app
+from src.main import app
 from fastapi.testclient import TestClient
-from ...main import override_get_db
+from tests.main import override_get_db
+from tests.main import test_db as _
 
 app.dependency_overrides[get_db] = override_get_db
 
 client = TestClient(app)
 
 
-def test_login(test_db):
+def test_login(_):
     """
     Test the login route.
 
@@ -17,7 +18,8 @@ def test_login(test_db):
     user_data = {"username": "a.hleborezov",
                  "email": "a.hleborezov@bread.example",
                  "password": "SuperMegaBread!"}
-    client.post("/auth/register", json=user_data)
+    register_response = client.post("/auth/register", json=user_data)
+    assert register_response.status_code == 201
     response = client.post("/auth/login",
                            json={"username": "a.hleborezov",
                                  "password": "SuperMegaBread!"})
@@ -25,7 +27,7 @@ def test_login(test_db):
     assert "access_token" in response.json()
 
 
-def test_login_empty_fields(test_db):
+def test_login_empty_fields(_):
     """
     Test the login procedure with empty fields.
 
@@ -38,7 +40,7 @@ def test_login_empty_fields(test_db):
     assert response.status_code == 422
 
 
-def test_login_empty_objects(test_db):
+def test_login_empty_objects(_):
     """
     Test the login procedure with empty object.
 

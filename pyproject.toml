@@ -18,8 +18,12 @@ dependencies = [
     "uvicorn (>=0.34.2,<0.35.0)"
 ]
 
+[tool.pytest.ini_options]
+pythonpath = [
+  ".", "src",
+]
+
 [tool.poetry]
-package-mode = false
 version = "1.0"
 name = "WeatherApp"
 description = "An app to monitor weather conditions with alerts and historical data."
@@ -35,6 +39,8 @@ python-jose = ">=3.4.0,<4.0.0"
 passlib = ">=1.7.4,<2.0.0"
 requests = ">=2.32.3,<3.0.0"
 uvicorn = ">=0.34.2,<0.35.0"
+bcrypt = "^4.3.0"
+httpx = "^0.28.1"
 
 [build-system]
 requires = ["poetry-core>=2.0.0,<3.0.0"]
