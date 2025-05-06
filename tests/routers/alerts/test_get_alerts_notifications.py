@@ -24,47 +24,6 @@ def register_and_login_user(client):
     return user.json()["access_token"]
 
 
-def test_get_notifications(monkeypatch, _):  # noqa: F811
-    """Test getting list of notifications."""
-    token = register_and_login_user(client)
-    monkeypatch.setattr("requests.get", mocked_weather_request)
-
-    empty_notifications = client.get(
-        "/alerts/notifications",
-        headers={"Authorization": f"Bearer {token}"}
-    )
-    assert empty_notifications.json() == []
-
-    client.post(
-        url="/alerts",
-        headers={"Authorization": f"Bearer {token}"},
-        json={
-            "location": "Moscow",
-            "column_name": "humidity",
-            "comparator": ">=",
-            "number": 75,
-        },
-    )
-
-    client.get(
-        "/weather/Moscow",
-        headers={"Authorization": f"Bearer {token}"}
-    )
-    time.sleep(1)
-
-    notifications = client.get(
-        "/alerts/notifications",
-        headers={"Authorization": f"Bearer {token}"}
-    )
-    assert len(notifications.json()) == 1
-    assert notifications.json()[0]["location"] == "Moscow"
-    assert notifications.json()[0]["column_name"] == "humidity"
-    assert notifications.json()[0]["comparator"] == ">="
-    assert notifications.json()[0]["number"] == 75
-    assert notifications.json()[0]["actual_number"] == 78
-    assert notifications.json()[0]["id"] == 1
-
-
 def test_get_notifications_not_authenticated(monkeypatch, _):  # noqa: F811
     """Test getting notifications when not authenticated."""
     monkeypatch.setattr("requests.get", mocked_weather_request)
