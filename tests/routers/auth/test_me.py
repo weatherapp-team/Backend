@@ -2,7 +2,7 @@ from core.database import get_db
 from src.main import app
 from fastapi.testclient import TestClient
 from tests.main import override_get_db
-from tests.main import test_db as _
+from tests.main import test_db as _  # noqa: F401
 
 
 app.dependency_overrides[get_db] = override_get_db
@@ -10,8 +10,7 @@ app.dependency_overrides[get_db] = override_get_db
 client = TestClient(app)
 
 
-
-def test_me(_):
+def test_me(_):  # noqa: F811
     """
     Test the profile route.
 
@@ -41,7 +40,7 @@ def test_me(_):
     assert 'password' not in res_json
 
 
-def test_me_not_authenticated(_):
+def test_me_not_authenticated(_):  # noqa: F811
     """
     Test the profile route when not authenticated.
 

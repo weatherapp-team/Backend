@@ -95,8 +95,7 @@ async def delete_alert(
     current_user: UserDB = Depends(get_current_user)
 ):
     """
-    Updating alert.
-    :param alert: alert.
+    Deleting alert.
     :param db: db session.
     :param current_user: current user.
     :return: message
