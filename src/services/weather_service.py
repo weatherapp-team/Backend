@@ -30,8 +30,10 @@ class WeatherService:
             location=location.lower()
         ).first()
 
-        if cached and (datetime.now(timezone.utc)
-                       - cached.timestamp.replace(tzinfo=timezone.utc)) < timedelta(minutes=30):
+        cached_utc = cached.timestamp.replace(tzinfo=timezone.utc)
+        diff = datetime.now(timezone.utc) - cached_utc
+
+        if cached and diff < timedelta(minutes=30):
             return cached.data
 
         try:
