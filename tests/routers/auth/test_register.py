@@ -15,9 +15,11 @@ def test_register(_):  # noqa: F811
 
     This test registers user.
     """
-    user_data = {"username": "test_user",
-                 "email": "test_user@test.example",
-                 "password": "testpassword"}
+    user_data = {
+        "username": "test_user",
+        "email": "test_user@test.example",
+        "password": "testpassword",
+    }
     response = client.post("/auth/register", json=user_data)
 
     assert response.status_code == 201
@@ -30,9 +32,11 @@ def test_register_duplicate_user(_):  # noqa: F811
 
     This test registers duplicate user, so the API should return error message.
     """
-    user_data = {"username": "test_user",
-                 "email": "test_user@test.example",
-                 "password": "testpassword"}
+    user_data = {
+        "username": "test_user",
+        "email": "test_user@test.example",
+        "password": "testpassword",
+    }
     client.post("/auth/register", json=user_data)
     response = client.post("/auth/register", json=user_data)
 
@@ -47,8 +51,7 @@ def test_register_missing_fields(_):  # noqa: F811
     This test registers user with missing fields,
      so the API should return error message.
     """
-    user_data = {"username": "test_user",
-                 "password": "testpassword"}
+    user_data = {"username": "test_user", "password": "testpassword"}
     client.post("/auth/register", json=user_data)
     response = client.post("/auth/register", json=user_data)
 
@@ -62,9 +65,7 @@ def test_register_empty_fields(_):  # noqa: F811
     This test registers user with empty fields,
      so the API should return error message.
     """
-    user_data = {"username": "",
-                 "email": "",
-                 "password": ""}
+    user_data = {"username": "", "email": "", "password": ""}
     client.post("/auth/register", json=user_data)
     response = client.post("/auth/register", json=user_data)
 

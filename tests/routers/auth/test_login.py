@@ -15,14 +15,17 @@ def test_login(_):  # noqa: F811
 
     This test registers a new user and tries to log in with valid credentials.
     """
-    user_data = {"username": "a.hleborezov",
-                 "email": "a.hleborezov@bread.example",
-                 "password": "SuperMegaBread!"}
+    user_data = {
+        "username": "a.hleborezov",
+        "email": "a.hleborezov@bread.example",
+        "password": "SuperMegaBread!",
+    }
     register_response = client.post("/auth/register", json=user_data)
     assert register_response.status_code == 201
-    response = client.post("/auth/login",
-                           json={"username": "a.hleborezov",
-                                 "password": "SuperMegaBread!"})
+    response = client.post(
+        "/auth/login",
+        json={"username": "a.hleborezov", "password": "SuperMegaBread!"},
+    )
     assert response.status_code == 200
     assert "access_token" in response.json()
 
@@ -34,8 +37,9 @@ def test_login_empty_fields(_):  # noqa: F811
     User may accidentally send request with empty fields,
     so the API should not make request to the database.
     """
-    response = client.post("/auth/login",
-                           json={"username": "", "password": ""})
+    response = client.post(
+        "/auth/login", json={"username": "", "password": ""}
+    )
     # TODO: currently it returns 401!
     assert response.status_code == 422
 
