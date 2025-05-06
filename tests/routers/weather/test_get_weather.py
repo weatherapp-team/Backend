@@ -1,9 +1,9 @@
 from core.database import get_db
-from main import app
+from src.main import app
 from fastapi.testclient import TestClient
 from tests.main import override_get_db
 from tests.main import test_db as _
-from .main import mocked_weather_request
+from tests.routers.weather.main import mocked_weather_request
 import time
 
 app.dependency_overrides[get_db] = override_get_db

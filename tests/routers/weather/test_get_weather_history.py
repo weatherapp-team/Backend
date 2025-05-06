@@ -1,9 +1,9 @@
 from core.database import get_db
-from main import app
+from src.main import app
 from fastapi.testclient import TestClient
 from tests.main import override_get_db
 from tests.main import test_db as _
-from .main import mocked_weather_request
+from tests.routers.weather.main import mocked_weather_request
 
 app.dependency_overrides[get_db] = override_get_db
 
@@ -24,7 +24,7 @@ def test_get_history(monkeypatch, _):
 
     empty_history = client.get("/weather/Moscow/history", headers={"Authorization": f"Bearer {token}"})
     assert empty_history.status_code == 200
-    assert empty_history == []
+    assert empty_history.json() == []
 
     monkeypatch.setattr("requests.get", mocked_weather_request)
     
@@ -36,7 +36,7 @@ def test_get_history(monkeypatch, _):
 
     nonempty_history = client.get("/weather/Moscow/history", headers={"Authorization": f"Bearer {token}"})
     assert nonempty_history.status_code == 200
-    assert len(nonempty_history) == 2
+    assert len(nonempty_history.json()) == 2
 
     assert nonempty_history.json()[0]["timestamp"] == response1.json()["timestamp"]
     assert nonempty_history.json()[1]["timestamp"] == response2.json()["timestamp"]
@@ -56,7 +56,7 @@ def test_get_history_from_nonexistent_location(monkeypatch, _):
 
     empty_history = client.get("/weather/Bebraversity/history", headers={"Authorization": f"Bearer {token}"})
     assert empty_history.status_code == 200
-    assert empty_history == []
+    assert empty_history.json() == []
 
     monkeypatch.setattr("requests.get", mocked_weather_request)
     
@@ -65,7 +65,7 @@ def test_get_history_from_nonexistent_location(monkeypatch, _):
 
     still_empty_history = client.get("/weather/Moscow/history", headers={"Authorization": f"Bearer {token}"})
     assert still_empty_history.status_code == 200
-    assert still_empty_history == []
+    assert still_empty_history.json() == []
 
 def test_get_history_not_authenticated(_):
     """
