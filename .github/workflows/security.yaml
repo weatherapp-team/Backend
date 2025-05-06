@@ -1,0 +1,26 @@
+name: Security check
+
+on:
+  push:
+
+jobs:
+  security:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Setup Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: "3.12"
+
+      - name: Install poetry
+        run: pip install --user poetry
+
+      - name: Install dependencies
+        run: poetry install --no-root
+
+      - name: Run Bandit check
+        run: poetry run bandit -r . -x ./tests

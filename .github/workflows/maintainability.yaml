@@ -1,0 +1,22 @@
+name: Maintainability check
+
+on: push
+
+jobs:
+  maintainability:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v4
+        with:
+          python-version: "3.12"
+      - name: Run image
+        uses: abatilo/actions-poetry@v2
+        with:
+          poetry-version: "1.7.1"
+      - name: Install dependencies
+        run: poetry install
+      - name: Run flake8
+        run: poetry run flake8
+      - name: Run complexity threshold check
+        run: poetry run flake8 --max-complexity 10 --max-function-length 50
