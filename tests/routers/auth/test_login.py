@@ -31,7 +31,7 @@ def test_login_empty_fields(_):  # noqa: F811
     """
     Test the login procedure with empty fields.
 
-    User may accidentaly send request with empty fields,
+    User may accidentally send request with empty fields,
     so the API should not make request to the database.
     """
     response = client.post("/auth/login",

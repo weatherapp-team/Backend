@@ -76,8 +76,8 @@ async def get_current_user(
 ):
     """
     Getting current user from token.
-    :param token: token.
     :param db: db session.
+    :param credentials: credentials
     :return: user if everything is correct
     """
     credentials_exception = HTTPException(
