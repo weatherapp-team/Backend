@@ -3,12 +3,14 @@ from main import app
 from fastapi.testclient import TestClient
 from tests.main import override_get_db
 from tests.main import test_db as _
+from .main import mocked_weather_request
 
 app.dependency_overrides[get_db] = override_get_db
 
 client = TestClient(app)
 
-def test_get_weather(_):
+
+def test_get_weather(monkeypatch, _):
     """
     Test getting weather
     This test tries to get weather.
@@ -18,6 +20,8 @@ def test_get_weather(_):
 
     user = client.post("/auth/login", json={"username": "test_user", "password": "testpassword"})
     token = user.json()["access_token"]
+
+    monkeypatch.setattr("requests.get", mocked_weather_request)
 
     weather_fields = [
         "lat",
