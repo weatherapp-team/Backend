@@ -46,37 +46,37 @@ def test_edit_alert(_):  # noqa: F811
             "data": {"id": 1, "location": "London",
                      "column_name": "humidity", "comparator": ">=",
                      "number": 25,
-                    }
+                     }
         },
         {
             "field": "column_name",
             "data": {"id": 1, "location": "London",
                      "column_name": "temperature", "comparator": ">=",
                      "number": 25,
-                    }
+                     }
         },
         {
             "field": "comparator",
             "data": {"id": 1, "location": "London",
                      "column_name": "temperature",
                      "comparator": "<=", "number": 25,
-                    }
+                     }
         },
         {
             "field": "number",
             "data": {"id": 1, "location": "London",
                      "column_name": "temperature", "comparator": "<=",
                      "number": 26,
-                    }
+                     }
         }]
     for edit in edits:
-        response = client.put(url="/alerts",
+        response = client.put(
+            url="/alerts",
             headers={"Authorization": f"Bearer {token}"},
             json=edit["data"],
         )
         assert response.status_code == 200
         assert response.json()["message"] == "Alert edited successfully"
-
     alerts = client.get(
         url="/alerts", headers={"Authorization": f"Bearer {token}"}
     )

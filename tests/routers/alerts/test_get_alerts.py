@@ -46,7 +46,7 @@ def test_get_alerts(_):  # noqa: F811:
         headers={"Authorization": f"Bearer {token}"},
         json={"location": "Innopolis", "column_name": "temperature",
               "comparator": ">", "number": 20,
-             },
+              },
     )
     have_alerts = client.get(
         "/alerts", headers={"Authorization": f"Bearer {token}"}
