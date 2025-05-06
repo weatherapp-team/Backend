@@ -1,5 +1,5 @@
 from core.database import get_db
-from main import app
+from src.main import app
 from fastapi.testclient import TestClient
 from tests.main import override_get_db
 from tests.main import test_db as _
