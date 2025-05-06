@@ -2,14 +2,14 @@ from core.database import get_db
 from src.main import app
 from fastapi.testclient import TestClient
 from tests.main import override_get_db
-from tests.main import test_db as _
+from tests.main import test_db as _  # noqa: F401
 
 app.dependency_overrides[get_db] = override_get_db
 
 client = TestClient(app)
 
 
-def test_login(_):
+def test_login(_):  # noqa: F811
     """
     Test the login route.
 
@@ -27,7 +27,7 @@ def test_login(_):
     assert "access_token" in response.json()
 
 
-def test_login_empty_fields(_):
+def test_login_empty_fields(_):  # noqa: F811
     """
     Test the login procedure with empty fields.
 
@@ -40,7 +40,7 @@ def test_login_empty_fields(_):
     assert response.status_code == 422
 
 
-def test_login_empty_objects(_):
+def test_login_empty_objects(_):  # noqa: F811
     """
     Test the login procedure with empty object.
 
