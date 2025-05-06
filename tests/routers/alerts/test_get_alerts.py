@@ -33,7 +33,6 @@ def test_get_alerts(_):  # noqa: F811:
     )
     assert isinstance(no_alerts.json(), list)
     assert len(no_alerts.json()) == 0
-
     client.post(
         url="/alerts",
         headers={"Authorization": f"Bearer {token}"},
@@ -54,20 +53,17 @@ def test_get_alerts(_):  # noqa: F811:
             "number": 20,
         },
     )
-
     have_alerts = client.get(
         "/alerts", headers={"Authorization": f"Bearer {token}"}
     )
     assert isinstance(have_alerts.json(), list)
     assert len(have_alerts.json()) == 2
-
     client.request(
         method="DELETE",
         url="/alerts",
         headers={"Authorization": f"Bearer {token}"},
         json={"id": have_alerts.json()[0]["id"]},
     )
-
     one_location = client.get(
         "/alerts", headers={"Authorization": f"Bearer {token}"}
     )
