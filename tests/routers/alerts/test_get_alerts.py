@@ -37,20 +37,15 @@ def test_get_alerts(_):  # noqa: F811:
         url="/alerts",
         headers={"Authorization": f"Bearer {token}"},
         json={
-            "location": "Moscow",
-            "column_name": "humidity",
-            "comparator": ">=",
-            "number": 75,
+            "location": "Moscow", "column_name": "humidity",
+            "comparator": ">=", "number": 75,
         },
     )
     client.post(
         url="/alerts",
         headers={"Authorization": f"Bearer {token}"},
-        json={
-            "location": "Innopolis",
-            "column_name": "temperature",
-            "comparator": ">",
-            "number": 20,
+        json={"location": "Innopolis", "column_name": "temperature",
+            "comparator": ">", "number": 20,
         },
     )
     have_alerts = client.get(

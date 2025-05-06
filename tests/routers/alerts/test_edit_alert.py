@@ -43,29 +43,29 @@ def test_edit_alert(_):  # noqa: F811
     edits = [{
             "field": "location",
             "data": {"id": 1, "location": "London",
-                "column_name": "humidity", "comparator": ">=",
-                "number": 25,
+                     "column_name": "humidity", "comparator": ">=",
+                     "number": 25,
             }
         },
         {
             "field": "column_name",
             "data": {"id": 1, "location": "London",
-                "column_name": "temperature", "comparator": ">=",
-                "number": 25,
+                     "column_name": "temperature", "comparator": ">=",
+                     "number": 25,
             }
         },
         {
             "field": "comparator",
-            "data": {
-                "id": 1, "location": "London", "column_name": "temperature",
-                "comparator": "<=", "number": 25,
+            "data": {"id": 1, "location": "London",
+                     "column_name": "temperature",
+                     "comparator": "<=", "number": 25,
             }
         },
         {
             "field": "number",
             "data": {"id": 1, "location": "London",
-                "column_name": "temperature", "comparator": "<=",
-                "number": 26,
+                     "column_name": "temperature", "comparator": "<=",
+                     "number": 26,
             }
         }]
     for edit in edits:
