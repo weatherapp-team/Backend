@@ -1,4 +1,4 @@
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 import requests
 from fastapi import HTTPException
 from sqlalchemy.orm import Session
@@ -30,7 +30,7 @@ class WeatherService:
             location=location.lower()
         ).first()
 
-        if cached and (datetime.now()
+        if cached and (datetime.now(timezone.utc)
                        - cached.timestamp) < timedelta(minutes=30):
             return cached.data
 
@@ -58,13 +58,13 @@ class WeatherService:
                 "wind_deg": data['wind']['deg'],
                 "sunrise": data['sys']['sunrise'],
                 "sunset": data['sys']['sunset'],
-                "timestamp": datetime.now()
+                "timestamp": datetime.now(timezone.utc)
             }
 
             new_cache = WeatherCacheDB(
                 location=location.lower(),
                 data=weather_data,
-                timestamp=datetime.now()
+                timestamp=datetime.now(timezone.utc)
             )
             self.service.add_item(weather_data)
             db.add(new_cache)

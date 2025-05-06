@@ -3,10 +3,12 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from core.database import Base
 
-engine_test = create_engine("sqlite:///./data/test.db",
-                            connect_args={"check_same_thread": False})
-SessionLocalTest = sessionmaker(autocommit=False,
-                                autoflush=False, bind=engine_test)
+engine_test = create_engine(
+    "sqlite:///./data/test.db", connect_args={"check_same_thread": False}
+)
+SessionLocalTest = sessionmaker(
+    autocommit=False, autoflush=False, bind=engine_test
+)
 
 
 def override_get_db():

@@ -16,28 +16,31 @@ def test_me(_):  # noqa: F811
 
     This test tries to get the profile of current user.
     """
-    user_data = {"username": "a.hleborezov",
-                 "email": "a.hleborezov@bread.example",
-                 "password": "SuperMegaBread!",
-                 "full_name": "Alexander Hleborezov"}
+    user_data = {
+        "username": "a.hleborezov",
+        "email": "a.hleborezov@bread.example",
+        "password": "SuperMegaBread!",
+        "full_name": "Alexander Hleborezov",
+    }
     register_response = client.post("/auth/register", json=user_data)
     assert register_response.status_code == 201
-    user = client.post("/auth/login",
-                       json={"username": "a.hleborezov",
-                             "password": "SuperMegaBread!"})
+    user = client.post(
+        "/auth/login",
+        json={"username": "a.hleborezov", "password": "SuperMegaBread!"},
+    )
 
-    response = client.get("/auth/me",
-                          headers={"Authorization":
-                                   f"Bearer "
-                                   f"{user.json()['access_token']}"})
+    response = client.get(
+        "/auth/me",
+        headers={"Authorization": f"Bearer " f"{user.json()['access_token']}"},
+    )
     res_json = response.json()
 
     assert response.status_code == 200
-    assert res_json['username'] == user_data['username']
-    assert res_json['email'] == user_data['email']
-    assert res_json['full_name'] == user_data['full_name']
-    assert res_json['disabled'] is False
-    assert 'password' not in res_json
+    assert res_json["username"] == user_data["username"]
+    assert res_json["email"] == user_data["email"]
+    assert res_json["full_name"] == user_data["full_name"]
+    assert res_json["disabled"] is False
+    assert "password" not in res_json
 
 
 def test_me_not_authenticated(_):  # noqa: F811
@@ -51,4 +54,4 @@ def test_me_not_authenticated(_):  # noqa: F811
     res_json = response.json()
 
     assert response.status_code == 403
-    assert res_json['detail'] == 'Not authenticated'
+    assert res_json["detail"] == "Not authenticated"

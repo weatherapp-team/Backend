@@ -2,6 +2,11 @@ name: Reliability check
 
 on:
   push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
 
 jobs:
   reliability:
