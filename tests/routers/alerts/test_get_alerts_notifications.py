@@ -10,7 +10,7 @@ app.dependency_overrides[get_db] = override_get_db
 client = TestClient(app)
 
 
-def register_and_login_user(client):
+def register_and_login_user(_):
     user_data = {
         "username": "test_user",
         "email": "test_user@test.example",
