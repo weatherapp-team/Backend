@@ -8,7 +8,7 @@ app.dependency_overrides[get_db] = override_get_db
 client = TestClient(app)
 
 
-def register_and_login_user(_):
+def register_and_login_user(_):  # noqa: F811
     user_data = {
         "username": "test_user",
         "email": "test_user@test.example",
@@ -22,7 +22,7 @@ def register_and_login_user(_):
     return user.json()["access_token"]
 
 
-def create_test_alert(_, token):
+def create_test_alert(_, token):  # noqa: F811
     return client.post(
         url="/alerts",
         headers={"Authorization": f"Bearer {token}"},
