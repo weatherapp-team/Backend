@@ -98,6 +98,7 @@ async def delete_alert(
     Deleting alert.
     :param db: db session.
     :param current_user: current user.
+    :param alert_delete: alert to delete
     :return: message
     """
     alert_in_db = (db.query(WeatherAlertDB)
